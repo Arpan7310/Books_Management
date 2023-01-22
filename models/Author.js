@@ -7,14 +7,27 @@ const authorSchema= mongoose.Schema({
         type:String,
         required:true
     },
-    firstName :{
+    firstname :{
         type:String,
         required:true
     },
-    lastName :{
+    lastname :{
         type:String,
         required:true
-    }
+    },
+    books :[{
+        type:mongoose.Types.ObjectId,
+        ref:"books",
+        required:true
+    }],
+
+    magazines:[{
+        type:mongoose.Types.ObjectId,
+        ref:"magazine",
+        required:true
+    }]
+
+
 })
 
 
