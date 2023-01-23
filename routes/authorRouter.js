@@ -1,6 +1,6 @@
 import express from 'express'
  
-import {saveAuthor}  from '../controllers/authorController.js';
+import {findBooksAndMagazinesByEmail, saveAuthor}  from '../controllers/authorController.js';
 import multer from 'multer';
 
 
@@ -20,6 +20,7 @@ var storage=multer.diskStorage({
 var uploads=multer({storage:storage});
 const authorRouter =express.Router();
 authorRouter.post("/save",uploads.single('csvFile'), saveAuthor);
+authorRouter.post("/findByAuthor",findBooksAndMagazinesByEmail)
 
 export default authorRouter;
 

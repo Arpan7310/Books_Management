@@ -40,3 +40,19 @@ export const  saveAuthor  =async (req,res,next) =>{
     
 }
 
+
+export const findBooksAndMagazinesByEmail =async(req,res,next) =>{
+
+    let email=req.body.email,author;
+   
+  try {
+   author= await Author.findOne({email:email}).populate("books magazines");
+  }
+  catch (err){
+    res.status(400).json({message:"No user found with email"});
+  }
+   res.status(200).json({message:author});
+   
+
+}
+
