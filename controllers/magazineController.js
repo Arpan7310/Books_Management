@@ -27,8 +27,9 @@ export const saveMagazines = async (req,res,next) =>{
 
             })
 
+            
 
-
+            
  
                 try {
                     newMagazine.save( async (err,room)=>{
