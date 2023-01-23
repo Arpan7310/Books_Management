@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 
-const magazineSchema =mongoose.createSchema({
+const magazineSchema =mongoose.Schema({
 
     title:{
     type:String,
@@ -10,7 +10,7 @@ const magazineSchema =mongoose.createSchema({
     },
     
     isbn :{
-        type:Number,
+        type:String,
         required:true
     },
 
