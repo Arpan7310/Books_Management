@@ -61,6 +61,27 @@ export const saveMagazines = async (req,res,next) =>{
 }
 
 
+export const findByMagazineIsbn = async (req,res,next) =>{
+    try {
+     let isbn=req.query.isbn;
+    
+ 
+     let magazine=await Magazine.findOne({isbn:isbn});
+     if(!magazine){
+        return res.status(400).json({message:"Not found"})
+     }
+     else {
+     res.status(200).json({magazine})
+     }
+    }
+    catch (err){
+     return console.log(err)
+    }
+
+
+ }
+
+
 
 
 

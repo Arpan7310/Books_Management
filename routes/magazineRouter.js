@@ -1,7 +1,7 @@
 import express from 'express';
 import { saveBooks } from '../controllers/booksController.js';
 import multer from 'multer';
-import { saveMagazines } from '../controllers/magazineController.js';
+import { findByMagazineIsbn, saveMagazines } from '../controllers/magazineController.js';
 
 
 var storage=multer.diskStorage({
@@ -20,6 +20,6 @@ var storage=multer.diskStorage({
 var uploads=multer({storage:storage});
 const magazineRouter=express.Router();
 magazineRouter.post('/save',uploads.single("csvFile"),saveMagazines);
-
+magazineRouter.get('/findByIsbn',findByMagazineIsbn);
 export default magazineRouter;
 

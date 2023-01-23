@@ -1,6 +1,7 @@
 import csv from 'csvtojson';
 import Author from '../models/Author.js';
 import Book from '../models/Book.js'
+import Magazine from '../models/Magazine.js';
 
 export const saveBooks = async (req,res,next) =>{
 
@@ -61,6 +62,78 @@ export const saveBooks = async (req,res,next) =>{
         res.status(200).json({message:response})     
     })
 }
+
+
+export const findAllBooksAndMagazine =async (req,res,next) =>{
+
+   let books,magazines,finalList;
+     
+    try{
+         books=await Book.find({});
+         magazines=await Magazine.find({});
+         finalList=[{books},{magazines}]
+    }
+    catch (err){
+        console.log(err);
+    }
+
+  
+
+    return res.status(200).json({list:finalList})
+}
+
+
+export const findAllBooksAndMagazineSorted =async (req,res,next) =>{
+
+    let books,magazines,finalList;
+      
+     try{
+          books=await Book.find({});
+          magazines=await Magazine.find({});
+          finalList=[...books,...magazines]
+          finalList.sort(function(a,b){
+            if(a.title.toUpperCase()<b.title.toUpperCase()){
+                return -1;
+            }
+            else if (a.title.toUpperCase()>b.title.toUpperCase()){
+                return 1;
+            }
+            else 
+            return 0;
+          })
+     }
+     catch (err){
+         console.log(err);
+     }
+ 
+   
+ 
+     return res.status(200).json({list:finalList})
+ }
+
+
+ export const findByIsbn = async (req,res,next) =>{
+    try {
+     let isbn=req.query.isbn;
+    
+ 
+     let book=await Book.findOne({isbn:isbn});
+     if(!book){
+        return res.status(400).json({message:"Not found"})
+     }
+     else {
+     res.status(200).json({book:book})
+     }
+    }
+    catch (err){
+     return console.log(err)
+    }
+
+
+ }
+
+
+
 
 
 
