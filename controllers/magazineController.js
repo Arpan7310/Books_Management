@@ -9,6 +9,11 @@ export const saveMagazines = async (req,res,next) =>{
          let i,j;
 
         for(i=0;i<response.length;i++){
+
+           let magazineFound= await Magazine.findOne({isbn:response[i]["isbn"]})
+        
+         if(!magazineFound){
+
             let authors=response[i]["authors"];
             let authorArray=authors.split(',');
         
@@ -27,10 +32,6 @@ export const saveMagazines = async (req,res,next) =>{
 
             })
 
-            
-
-            
- 
                 try {
                     newMagazine.save( async (err,room)=>{
                         let k;
@@ -48,7 +49,10 @@ export const saveMagazines = async (req,res,next) =>{
                 }
             
 
-        
+            }
+            else {
+                console.log("magazine present in db" )
+            }
 
 
         }

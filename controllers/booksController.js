@@ -9,6 +9,12 @@ export const saveBooks = async (req,res,next) =>{
          let i,j;
 
         for(i=0;i<response.length;i++){
+
+            let foundBook= await Book.findOne({isbn:response[i]["isbn"]});
+
+            if(!foundBook){
+
+
             let authors=response[i]["authors"];
             let authorArray=authors.split(',');
         
@@ -18,6 +24,7 @@ export const saveBooks = async (req,res,next) =>{
               newArray.push(x._id)
             }
            
+            
 
             let newbook = new Book ({
                 title:response[i].title,
@@ -26,6 +33,8 @@ export const saveBooks = async (req,res,next) =>{
                 authors:newArray
 
             })
+
+            
 
             try {
                 newbook.save( async (err,room)=>{
@@ -43,7 +52,10 @@ export const saveBooks = async (req,res,next) =>{
             catch (err) {
                 console.log(err)
             }
-
+        }
+        else {
+            console.log("Book already present");
+        }
 
         }
         res.status(200).json({message:response})     
