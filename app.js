@@ -21,10 +21,11 @@ app.use("/api/books",bookRouter)
 app.use("/api/magazines",magazineRouter)
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/books',
+mongoose.connect('mongodb+srv://Arpan:password1234@cluster0.5mztn43.mongodb.net/?retryWrites=true&w=majority',
     { useNewUrlParser: true, useUnifiedTopology: true }
 ).then((res)=>{
 app.listen(3000);
+
 
 }).catch((err)=>{
 console.log(err)

@@ -7,11 +7,24 @@ export const saveBooks = async (req,res,next) =>{
 
 
     csv({delimiter:"auto"}).fromFile(req.file.path).then( async response=>{
+
+
+          
+
          let i,j;
 
-        for(i=0;i<response.length;i++){
+         if (req.file.mimetype !== 'text/csv') {
+            return res.status(400).send({ message: "Please upload a valid csv file" });
+        }
 
-            let foundBook= await Book.findOne({isbn:response[i]["isbn"]});
+     
+        for(i=0;i<response.length;i++){
+            let row=response[i];
+            if (!row["title"] || !row["isbn"] || !row["authors"] || !row["description"]) {
+                return res.status(500).json({ message: "Fields missing in csv ,please check your csv file" })
+            }
+
+           let foundBook= await Book.findOne({isbn:response[i]["isbn"]});
 
             if(!foundBook){
 
@@ -22,6 +35,9 @@ export const saveBooks = async (req,res,next) =>{
             let newArray=[];
             for (j=0;j<authorArray.length;j++){
               let x= await Author.findOne({email:authorArray[j]});
+              if(!x){
+                return res.status(500).json({message:"Author not found in db please check valid email"})
+              }
               newArray.push(x._id)
             }
            
@@ -39,6 +55,12 @@ export const saveBooks = async (req,res,next) =>{
 
             try {
                 newbook.save( async (err,room)=>{
+                 
+                    if(err){
+                       return res.status(500).json({message:err});
+                    }
+
+
                     let k;
                  for (k=0;k<room["authors"].length;k++){
                      await  Author.findByIdAndUpdate(room["authors"][k],{
