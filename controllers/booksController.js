@@ -2,7 +2,8 @@ import csv from 'csvtojson';
 import Author from '../models/Author.js';
 import Book from '../models/Book.js'
 import Magazine from '../models/Magazine.js';
-
+import { dirpath } from '../app.js';
+import fs from 'fs';
 export const saveBooks = async (req,res,next) =>{
 
 
@@ -12,6 +13,10 @@ export const saveBooks = async (req,res,next) =>{
           
 
          let i,j;
+
+            fs.unlink(`${dirpath.concat("/"+req.file.originalname)}`,function(err){
+            console.log(err)
+          })
 
          if (req.file.mimetype !== 'text/csv') {
             return res.status(400).send({ message: "Please upload a valid csv file" });
@@ -81,6 +86,8 @@ export const saveBooks = async (req,res,next) =>{
         }
 
         }
+
+       
         res.status(200).json({message:response})     
     })
 }

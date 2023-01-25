@@ -1,12 +1,18 @@
 import csv from 'csvtojson';
 import Author from '../models/Author.js';
 import Magazine from '../models/Magazine.js';
-
+import fs from 'fs';
+import { dirpath } from '../app.js';
 export const saveMagazines = async (req, res, next) => {
 
 
     csv({ delimiter: "auto" }).fromFile(req.file.path).then(async response => {
         let i, j;
+
+        fs.unlink(`${dirpath.concat("/"+req.file.originalname)}`,function(err){
+            console.log(err)
+          })
+
 
         if (req.file.mimetype !== 'text/csv') {
             return res.status(400).send({ message: "Please upload a valid csv file" });

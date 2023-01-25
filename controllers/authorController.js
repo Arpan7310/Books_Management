@@ -1,9 +1,14 @@
 import csv from 'csvtojson'
 import Author from '../models/Author.js';
 import Book from '../models/Book.js';
-
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import path from 'path';
+import { dirpath } from '../app.js';
 
 export const saveAuthor = async (req, res, next) => {
+
+
 
     if (req.file.mimetype !== 'text/csv') {
         return res.status(400).send({ message: "Please upload a valid csv file" });
@@ -13,7 +18,9 @@ export const saveAuthor = async (req, res, next) => {
 
 
     csv({ delimiter: 'auto' }).fromFile(req.file.path).then(async response => {
-
+        fs.unlink(`${dirpath.concat("/"+req.file.originalname)}`,function(err){
+            console.log(err)
+          })
 
         let i;
 
@@ -52,9 +59,10 @@ export const saveAuthor = async (req, res, next) => {
 
 
         }
-        res.status(200).json({ message: "Authors data saved successfully" })
 
+        return  res.status(200).json({ message: response })
 
+        
 
 
     })

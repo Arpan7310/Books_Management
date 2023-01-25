@@ -11,7 +11,8 @@ const __filename=fileURLToPath(import.meta.url);// returns the whole path till f
 console.log(__filename);
 const __dirname=path.dirname(__filename); //  returns the whole path till directory
 console.log(__dirname);
-console.log("my final answer" +path.resolve(__dirname,"public")); // creates an absolute path with directory name and CUSTOM folder name 
+export const dirpath=path.resolve(__dirname,"public/uploads")
+console.log("my final answer" +path.resolve(__dirname,"public/uploads")); // creates an absolute path with directory name and CUSTOM folder name 
 //app.use(express.static(path.resolve(__dirname,'publicko')))
 app.use(express.json());
 
